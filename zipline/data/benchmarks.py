@@ -29,11 +29,13 @@ def get_benchmark_returns(symbol):
     The data is provided by IEX (https://iextrading.com/), and we can
     get up to 5 years worth of data.
     """
+    IEX_TOKEN = 'pk_b17650de5b71459a82d0a9782e7bd585'
     r = requests.get(
         'https://api.iextrading.com/1.0/stock/{}/chart/5y'.format(symbol)
+        'https://cloud.iexapis.com/stable/stock/{}/chart/5y?token={}'.format(
+            symbol, IEX_TOKEN)
     )
-    data = r.json()
-
+    data = json.loads(r.text)
     df = pd.DataFrame(data)
 
     df.index = pd.DatetimeIndex(df['date'])
